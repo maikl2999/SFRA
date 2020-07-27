@@ -1,0 +1,11 @@
+<h1>Product type</h1>
+
+<h2>${pdict.name}</h2>
+<div>
+    <ul>
+        <isloop items="${pdict.products}" var="product">
+            <li><span>Name: ${product.name}</span><br><span>ID: ${product.image}</span></li> 
+        </isloop>
+    </ul>
+    <iscomment> ${pdict.variants} </iscomment>
+</div>
