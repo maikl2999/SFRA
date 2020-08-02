@@ -9,8 +9,8 @@ var pageMetaData = require('*/cartridge/scripts/middleware/pageMetaData');
  * Any customization on this endpoint, also requires update for Default-Start endpoint
  */
 server.get('Show', consentTracking.consent, cache.applyDefaultCache, function (req, res, next) {
-    var amProgressing = require('dw/system/Site').getCurrent().getCustomPreferenceValue('amProgressing');
-    var currentLabName = require('dw/system/Site').getCurrent().getCustomPreferenceValue('currentLabName');
+   // var amProgressing = require('dw/system/Site').getCurrent().getCustomPreferenceValue('amProgressing');
+   // var currentLabName = require('dw/system/Site').getCurrent().getCustomPreferenceValue('currentLabName');
     var Site = require('dw/system/Site');
     var pageMetaHelper = require('*/cartridge/scripts/helpers/pageMetaHelper');
 
