@@ -3,6 +3,7 @@ var server = require('server');
 var cache = require('*/cartridge/scripts/middleware/cache');
 var consentTracking = require('*/cartridge/scripts/middleware/consentTracking');
 var pageMetaData = require('*/cartridge/scripts/middleware/pageMetaData');
+var Resource = require('dw/web/Resource');
 
 server.extend(module.superModule);
 /**
@@ -25,7 +26,9 @@ server.replace('Show', consentTracking.consent, cache.applyDefaultCache, functio
      var pageMetaHelper = require('*/cartridge/scripts/helpers/pageMetaHelper');
  
      pageMetaHelper.setPageMetaTags(req.pageMetaData, Site.current);
-     res.render('/home/customHome');
+     res.render('/home/customHome', {
+        customTextMsg: Resource.msgf('custome.code', 'address', null, 'uuppss', 'rrrr')
+     });
      next();
  }, pageMetaData.computedPageMetaData);
 

@@ -6,8 +6,11 @@
     </isscript>
 
     <!-- +1.888.555.0199 --><!--This phone is a requirement to support existing Gomez monitor of SiteGenesis. Demadware customers can remove this.-->
-<div>
-    lol
+<div class="container">
+    ${pdict.customTextMsg}
+</div>
+<div class="container">
+    from custom controller
 </div>
     <div class="home-main homepage">
         <isslot id="home-main-m" description="Main home page slot." context="global" />
