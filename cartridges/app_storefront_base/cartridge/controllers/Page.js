@@ -47,6 +47,10 @@ server.get(
         var topLevelCategories = siteRootCategory.hasOnlineSubCategories() ?
             siteRootCategory.getOnlineSubCategories() : null;
 
+        var lab = new Categories(topLevelCategories);
+
+        var lab2 = 124124;
+
         res.render('/components/header/menu', new Categories(topLevelCategories));
         next();
     }

@@ -1,0 +1,8 @@
+<form action="${URLUtils.url('Custom-Show')}" class="registration" method="POST" name="myform">    
+    <input type="text" class="form-control" id="name" value="Enter name" name="name" encoding="off" />
+    <input type="text" class="form-control" id="surname" name="Enter surname" value="surname" encoding="off" />
+ <input type="hidden" name="${pdict.csrf.tokenName}" value="${pdict.csrf.token}"/> 
+    <button type="submit" class="btn btn-block btn-primary">
+        ${Resource.msg('button.createaccount.registration', 'registration', null)}
+    </button>
+</form>

@@ -1,0 +1,5 @@
+
+
+<isinclude template="showdate" />
+<br/>
+<isinclude url="${URLUtils.url('Custom-NonCachedBlock')}"/>

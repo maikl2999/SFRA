@@ -1,0 +1,18 @@
+<isdecorate template="common/layout/page">
+
+
+<div>
+    ${pdict.data}
+</div>
+
+
+
+
+<iscomment> <isloop items=${pdict.promo} var="promo" status="loopstatus">
+    <div>
+        ${promo.description}
+    </div>
+</isloop> </iscomment>
+
+
+</isdecorate>

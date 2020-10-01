@@ -1,0 +1,6 @@
+<div>
+    ${pdict.product.id}
+</div>
+<div>
+its my module
+</div>
