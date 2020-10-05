@@ -22,10 +22,10 @@
 
             <div class="form-group
                 <isif condition="${pdict.profileForm.customer.city.mandatory === true}">required</isif>">
-                <label class="form-control-label" for="lastName">
+                <label class="form-control-label" for="city">
                     <isprint value="${pdict.profileForm.customer.city.label}" encoding="htmlcontent" />
                 </label>
-                <input type="text" class="form-control" id="lastName"
+                <input type="text" class="form-control" id="city"
                     <isprint value="${pdict.profileForm.customer.city.attributes}" encoding="off" />>
                 <div class="invalid-feedback"></div>
             </div>

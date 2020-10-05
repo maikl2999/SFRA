@@ -14,6 +14,7 @@ function getProfile(profile) {
         result = {
             firstName: profile.firstName,
             lastName: profile.lastName,
+            city: session.getCustomer().profile.custom.city,
             email: profile.email,
             phone: profile.phone,
             password: '********'
