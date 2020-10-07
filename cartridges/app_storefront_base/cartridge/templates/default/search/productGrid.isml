@@ -6,7 +6,7 @@
      data-page-number="${pdict.productSearch.pageNumber}"
 >
     <!--- More button --->
-    <isif condition="${pdict.productSearch.showMoreUrl !== ''}">
+    <isif condition="${pdict.productSearch.showMoreUrl !== '' && pdict.isInfiniteScroll === "disable"}">
         <div class="show-more">
             <div class="text-center">
                 <button class="btn btn-outline-primary col-12 col-sm-4 more"
@@ -16,6 +16,14 @@
                 </button>
             </div>
         </div>
+    </isif>
+
+    <!--- Infinite scroll --->
+    <isif condition="${pdict.productSearch.showMoreUrl !== '' && pdict.isInfiniteScroll === "enable"}">
+        <input type="hidden" class="is-infinite-scroll" value=""
+            data-url="${pdict.productSearch.showMoreUrl}"
+            data-is-infinite-scroll="${pdict.isInfiniteScroll}" 
+        />
     </isif>
 
     <input type="hidden" class="permalink" value="${pdict.productSearch.permalink}" />

@@ -11,6 +11,7 @@ server.get('UpdateGrid', function (req, res, next) {
     var ProductSearchModel = require('dw/catalog/ProductSearchModel');
     var searchHelper = require('*/cartridge/scripts/helpers/searchHelpers');
     var ProductSearch = require('*/cartridge/models/search/productSearch');
+    var isInfiniteScroll = require('dw/system/Site').getCurrent().getCustomPreferenceValue('infiniteScroll');
 
     var apiProductSearch = new ProductSearchModel();
     apiProductSearch = searchHelper.setupSearch(apiProductSearch, req.querystring);
@@ -26,6 +27,8 @@ server.get('UpdateGrid', function (req, res, next) {
         CatalogMgr.getSortingOptions(),
         CatalogMgr.getSiteCatalog().getRoot()
     );
+
+    res.setViewData({isInfiniteScroll: isInfiniteScroll ? "enable" : "disable"});
 
     res.render('/search/productGrid', {
         productSearch: productSearch
@@ -81,6 +84,7 @@ server.get('ShowAjax', cache.applyShortPromotionSensitiveCache, consentTracking.
 server.get('Show', cache.applyShortPromotionSensitiveCache, consentTracking.consent, function (req, res, next) {
     var searchHelper = require('*/cartridge/scripts/helpers/searchHelpers');
     var template = 'search/searchResults';
+    var isInfiniteScroll = require('dw/system/Site').getCurrent().getCustomPreferenceValue('infiniteScroll');
 
     var result = searchHelper.search(req, res);
 
@@ -97,6 +101,8 @@ server.get('Show', cache.applyShortPromotionSensitiveCache, consentTracking.cons
     if (redirectGridUrl) {
         res.redirect(redirectGridUrl);
     }
+
+    res.setViewData({isInfiniteScroll: isInfiniteScroll ? "enable" : "disable"});
 
     res.render(template, {
         productSearch: result.productSearch,
