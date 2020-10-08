@@ -28,7 +28,7 @@ server.get('UpdateGrid', function (req, res, next) {
         CatalogMgr.getSiteCatalog().getRoot()
     );
 
-    res.setViewData({isInfiniteScroll: isInfiniteScroll ? "enable" : "disable"});
+    res.setViewData({isInfiniteScroll: isInfiniteScroll});
 
     res.render('/search/productGrid', {
         productSearch: productSearch
@@ -102,7 +102,7 @@ server.get('Show', cache.applyShortPromotionSensitiveCache, consentTracking.cons
         res.redirect(redirectGridUrl);
     }
 
-    res.setViewData({isInfiniteScroll: isInfiniteScroll ? "enable" : "disable"});
+    res.setViewData({isInfiniteScroll: isInfiniteScroll});
 
     res.render(template, {
         productSearch: result.productSearch,

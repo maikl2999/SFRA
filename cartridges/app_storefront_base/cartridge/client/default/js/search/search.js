@@ -177,48 +177,6 @@ module.exports = {
         });
     },
 
-    showMoreWithScroll: function () {
-        // Show more products with infinite scroll
-        var productList = Array.from(document.querySelectorAll('.product'));        
-        var observableElem = productList[productList.length -1];
-        var dataElem = document.querySelector('.is-infinite-scroll');
-
-        var observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    observer.unobserve(entry.target);
-                    dataElem = document.querySelector('.is-infinite-scroll')
-                    if (!dataElem || $(dataElem).data('isInfiniteScroll') !== 'enable') {
-                        return;
-                    };
-                    var showMoreUrl = $(dataElem).data('url');
-                    $.spinner().start();
-                    $(dataElem).trigger('search:showMore', new Event('search:showMore'));
-                    $.ajax({
-                        url: showMoreUrl,
-                        data: { selectedUrl: showMoreUrl },
-                        method: 'GET',
-                        success: function (response) {
-                            $('.grid-footer').replaceWith(response);
-                            updateSortOptions(response);
-                            $.spinner().stop();
-                            productList = Array.from(document.querySelectorAll('.product'));  
-                            observableElem = productList[productList.length -1]
-                            observer.observe(observableElem);
-                        },
-                        error: function () {
-                            $.spinner().stop();
-                        }
-                    });
-                }
-            });
-        }, {
-            threshold: 1
-        });
-        
-        observer.observe(observableElem);
-    },
-
     applyFilter: function () {
         // Handle refinement value selection and reset click
         $('.container').on(
