@@ -1,7 +1,7 @@
 <isinclude template="search/components/productTiles" />
 
 <script>
-    var isInfiniteScroll = ${pdict.isInfiniteScroll};
+    window.isInfiniteScroll = ${pdict.isInfiniteScroll};
 </script>
 
 <div class="col-12 grid-footer"

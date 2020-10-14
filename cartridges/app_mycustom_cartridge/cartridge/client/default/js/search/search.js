@@ -60,6 +60,28 @@ function showMoreWithScroll () {
     }
 }
 
-var exportSearch = $.extend({}, baseSearch, {showMoreWithScroll: showMoreWithScroll});
+function scrollSavePosition () {
+    window.addEventListener('scroll', function() {
+        var scrollPos = window.pageYOffset;
+        debugger
+        sessionStorage.setItem('scrollPos', scrollPos + 'px');
+      });
+}
+
+function scrollSetPosition () {
+    var scrollPos = sessionStorage.getItem('scrollPos')
+    
+    if (scrollPos) {
+        setTimeout(function() {
+            window.scrollTo(0, parseInt(scrollPos))
+        }, 400);
+    }
+}
+
+var exportSearch = $.extend({}, baseSearch, {
+    showMoreWithScroll: showMoreWithScroll,
+    scrollSavePosition: scrollSavePosition,
+    scrollSetPosition: scrollSetPosition
+});
 
 module.exports = exportSearch;
