@@ -13,7 +13,7 @@ function account(currentCustomer, addressModel, orderModel) {
     base.call(this, currentCustomer, addressModel, orderModel);
     var profile = currentCustomer.raw.profile;
 
-    if (profile) {
+    if (profile && profile.custom && this.profile) {
         this.profile.city = profile.custom && profile.custom.city;
     }
 }
