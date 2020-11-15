@@ -16,8 +16,43 @@ var base = module.superModule;
  */
 function getStores(radius, postalCode, lat, long, geolocation, showMap, url, products) {
     var ProductInventoryMgr = require('dw/catalog/ProductInventoryMgr');
+    var BaseStoresModel = require('*/cartridge/models/stores');
+    var StoreMgr = require('dw/catalog/StoreMgr');
+    var Site = require('dw/system/Site');
+    var URLUtils = require('dw/web/URLUtils');
 
-    var storesModel = base.getStores(radius, postalCode, lat, long, geolocation, showMap, url);
+    var countryCode = geolocation.countryCode;
+    var distanceUnit = countryCode === 'US' ? 'mi' : 'km';
+    var resolvedRadius = radius ? parseInt(radius, 10) : 15;
+
+    var searchKey = {};
+    var storeMgrResult = null;
+    var location = {};
+
+    if (postalCode && postalCode !== '') {
+        // find by postal code
+        searchKey = postalCode;
+        storeMgrResult = StoreMgr.searchStoresByPostalCode(
+            countryCode,
+            searchKey,
+            distanceUnit,
+            resolvedRadius
+        );
+        searchKey = { postalCode: searchKey };
+    } else {
+        // find by coordinates (detect location)
+        location.lat = lat && long ? parseFloat(lat) : geolocation.latitude;
+        location.long = long && lat ? parseFloat(long) : geolocation.longitude;
+
+        storeMgrResult = StoreMgr.searchStoresByCoordinates(location.lat, location.long, distanceUnit, resolvedRadius);
+        searchKey = { lat: location.lat, long: location.long };
+    }
+
+    var actionUrl = url || URLUtils.url('Stores-FindStores', 'showMap', showMap).toString();
+    var apiKey = Site.getCurrent().getCustomPreferenceValue('mapAPI');
+
+    var storesModel = new BaseStoresModel(storeMgrResult.keySet(), searchKey, resolvedRadius, actionUrl, apiKey);
+    var storesEntry = storeMgrResult.entrySet().toArray();
 
     if (products) {
         storesModel.stores = storesModel.stores.filter(function (store) {
@@ -32,6 +67,25 @@ function getStores(radius, postalCode, lat, long, geolocation, showMap, url, pro
             return false;
         });
     }
+
+    storesModel.stores.forEach(function (store, index) {
+        var distance = null;
+
+        storesEntry.forEach(function (entry) {
+            if (entry.getKey().ID === store.ID) {
+                distance = entry.getValue();
+            }
+        })
+
+        store.distanceVal = distance;
+        store.distanceUnit = distanceUnit;
+    })
+
+    storesModel.stores.sort(function (storeA, storeB) {
+        var a = storeA.distanceVal;
+        var b = storeB.distanceVal
+        return a - b;
+    })
 
     return storesModel;
 }

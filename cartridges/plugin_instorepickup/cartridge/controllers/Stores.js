@@ -43,10 +43,17 @@ server.get('InventorySearch', cache.applyDefaultCache, function (req, res, next)
     var horizontalView = req.querystring.horizontalView || false;
     var isForm = req.querystring.isForm || false;
 
+    var geo = req.geolocation;
+    geo.countryCode = 'US';
+    geo.latitude = 42.3403189;
+    geo.longitude = -71.0817859;
+    lat = 42.3403189;
+    long = -71.0817859;
+
     var products = buildProductListAsJson(req.querystring.products);
 
     var url = URLUtils.url('Stores-FindStores', 'showMap', showMap, 'products', req.querystring.products).toString();
-    var storesModel = storeHelpers.getStores(radius, postalCode, lat, long, req.geolocation, showMap, url, products);
+    var storesModel = storeHelpers.getStores(radius, postalCode, lat, long, geo, showMap, url, products);
 
     var viewData = {
         stores: storesModel,
@@ -86,7 +93,14 @@ server.replace('FindStores', function (req, res, next) {
     var url = null;
     var products = buildProductListAsJson(req.querystring.products);
 
-    var storesModel = storeHelpers.getStores(radius, postalCode, lat, long, req.geolocation, showMap, url, products);
+    var geo = req.geolocation;
+    geo.countryCode = 'US';
+    geo.latitude = 42.3403189;
+    geo.longitude = -71.0817859;
+    lat = 42.3403189;
+    long = -71.0817859;
+
+    var storesModel = storeHelpers.getStores(radius, postalCode, lat, long, geo, showMap, url, products);
 
     if (products) {
         var context = {
