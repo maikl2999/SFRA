@@ -72,7 +72,8 @@ function submitAddress() {
     $('form.address-form').submit(function (e) {
         var $form = $(this);
         e.preventDefault();
-        var url = $form.attr('data-save-url');
+        // var url = $form.attr('data-save-url');
+        var url = $form.attr('action');
         $form.spinner().start();
         var data = createSearchParam($form);
         $.ajax({
