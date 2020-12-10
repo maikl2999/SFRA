@@ -1,0 +1,20 @@
+<label class="form-control-label" for="address-popup-label_js">Apply qualified address</label>
+<select class="form-control" id="address-popup-label_js">
+    <isloop items=${pdict.addresses} var="address" status="status">
+        <option 
+
+            <isif condition="${status.index === 0}">selected</isif>
+            data-address="${address.components.primary_number} ${address.components.street_name} ${address.components.street_suffix}"
+            data-city="${address.components.city_name}"
+            data-zip-code="${address.components.zipcode}"
+            class="addressVariant"
+        >
+            ${address.components.city_name} city ${address.components.primary_number} ${address.components.street_name} ${address.components.street_suffix}
+        </option>
+    </isloop>
+</select>
+
+<div class="modal-footer">
+    <button type="button" class="cancelAddress btn btn-secondary" data-dismiss="modal">cancel</button>
+    <button type="button" class="confirmAddress btn btn-primary">confirm</button>
+</div>

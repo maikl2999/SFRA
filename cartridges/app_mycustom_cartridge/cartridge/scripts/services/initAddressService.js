@@ -1,5 +1,7 @@
 /** API Includes */
 var LocalServiceRegistry = require('dw/svc/LocalServiceRegistry');
+var authId = require('dw/system/Site').getCurrent().getCustomPreferenceValue('Address_API_RefArch_ID');
+var authToken = require('dw/system/Site').getCurrent().getCustomPreferenceValue('Address_API_RefArch_KEY');
 
 /** Service to get inventory , shipping info */
 var addressService = LocalServiceRegistry.createService('int_address_refArch.https', {
@@ -14,11 +16,23 @@ var addressService = LocalServiceRegistry.createService('int_address_refArch.htt
         svc.setRequestMethod('GET');
         svc.setURL(svc.URL);
 
-        for (var key in params) {
-            svc.addParam(key, params[key]);
+        var combineParams = {
+            'auth-id': authId,
+            'auth-token': authToken,
+            'candidates': 10,
+            'match': 'invalid',
+            'street': params.street || '',
+            'street2': params.street2  || '',
+            'city': params.city  || '',
+            'state': params.state  || '',
+            'zipcode': params.zipcode  || ''
+        };
+
+
+        for (var key in combineParams) {
+            svc.addParam(key, combineParams[key]);
         }
 
-        var test = params;
         return params;
     },
 

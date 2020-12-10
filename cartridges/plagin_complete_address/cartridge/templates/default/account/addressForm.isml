@@ -1,7 +1,7 @@
 <form
     action="${URLUtils.url('Address-SaveAddress', 'addressId', pdict.addressId)}"
     data-save-url="${URLUtils.url('Address-AddressVerification')}"
-    class="address-form-complete-address"
+    class="address-form"
     method="POST"
     <isprint value="${pdict.addressForm.attributes}" encoding="off" />>
     <!-- Address Title -->

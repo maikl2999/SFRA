@@ -4,36 +4,20 @@ var baseAddressBook = require('base/addressBook/addressBook');
 var formValidation = require('base/components/formValidation');
 
 function showModal(data) {
-    $("body").prepend(data.htmlModal);
-
-    for (var i = 0; i < data.addresses.length; i++) {
-        $('#radioArea').append(data.htmlRadioElem);
-        var $formCheck = $('#radioArea .form-check:last-child')
-        $formCheck.find('input').attr('id', 'gridRadios' + (i + 1)).attr('value', 'option' + (i + 1));
-        var label = createLabel(data.addresses[i]);
-        $formCheck.find('label').attr('for', 'gridRadios' + (i + 1)).text(label);
-
-        setDataAttr($formCheck.find('input'), data.addresses[i]);
-
-        if (i === 0) {
-            $formCheck.find('input').prop("checked", true)
-        }
-    }
-
-    $('#addressBookModal').modal();
+    var $popup = $(".address-popup_js");
+    $popup.prepend(data.renderTemplate).removeClass('invisible');    
     
-    $('#addressBookModal').on('hide.bs.modal', function (e) {
-        $('#addressBookModal').remove();
+    $popup.find('.cancelAddress').on('click', function (e) {
         saveAddresss();
     })
 
-    $('#confirmAddress').on('click', function (e) {
+    $popup.find('.confirmAddress').on('click', function (e) {
         e.preventDefault();
-        var inputElem = $('input[name="addressVariant"]:checked')[0];
-        var address = inputElem.dataset.address;
-        var city = inputElem.dataset.city;
-        var zipCode = inputElem.dataset.zipCode;
-        var $form = $('form.address-form-complete-address');
+        var addressVariant = $('.address-popup_js .addressVariant:checked')[0];
+        var address = addressVariant.dataset.address;
+        var city = addressVariant.dataset.city;
+        var zipCode = addressVariant.dataset.zipCode;
+        var $form = $('form.address-form');
 
         $form.find('input#address1').val(address);
         $form.find('input#city').val(city);
@@ -43,35 +27,24 @@ function showModal(data) {
     })
 }
 
-function createLabel(address) {
-    var components = address.components;
-    return components.city_name + " city " + components.primary_number + " " + components.street_name + " " + components.street_suffix;
-}
-
-function setDataAttr($input, address) {
-    var components = address.components;
-
-    $input.attr('data-address', components.primary_number + " " + components.street_name + " " + components.street_suffix);
-    $input.attr('data-city', components.city_name);
-    $input.attr('data-zip-code', components.zipcode);
-}
-
-function createSearhParam($form) {
+function createSearchParam($form) {
     var params = new URLSearchParams();
     params.set('street', $form.find('#address1').val());
     params.set('street2', $form.find('#address2').val());
     params.set('city', $form.find('#city').val());
     params.set('state', $form.find('#state').val());
     params.set('zipcode', $form.find('#zipCode').val());
+    params.set('isVerificationAddress', "true");
 
     return params.toString();
 }
 
 function saveAddresss() {
-    var $form = $('form.address-form-complete-address');
+    $(".address-popup_js").remove();
+    var $form = $('form.address-form');
     var url = $form.attr('action');
     $form.spinner().start();
-    $('form.address-form-complete-address').trigger('address:submit', new Event('address:submit'));
+    $('form.address-form').trigger('address:submit', new Event('address:submit'));
     $.ajax({
         url: url,
         type: 'post',
@@ -95,24 +68,24 @@ function saveAddresss() {
     return false;
 }
 
-function verificationAddress() {
-    $('form.address-form-complete-address').submit(function (e) {
+function submitAddress() {
+    $('form.address-form').submit(function (e) {
         var $form = $(this);
         e.preventDefault();
         var url = $form.attr('data-save-url');
         $form.spinner().start();
-        var data1 = createSearhParam($form);
+        var data = createSearchParam($form);
         $.ajax({
             url: url,
             type: 'post',
             dataType: 'json',
-            data: data1,
+            data: data,
             success: function (data) {
-                $form.spinner().stop();
                 if (data.success) {
+                    $form.spinner().stop();
                     showModal(data);
                 } else {
-                    location.href = data.redirectUrl;
+                    saveAddresss();
                 }
             },
             error: function (err) {
@@ -127,7 +100,7 @@ function verificationAddress() {
 }
 
 var addressBook = $.extend({}, baseAddressBook, {
-    verificationAddress: verificationAddress,
+    submitAddress: submitAddress
 });
 
 module.exports = addressBook;
