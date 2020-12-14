@@ -11,17 +11,17 @@ function showModal(data) {
         saveAddresss();
     })
 
-    $popup.find('.confirmAddress').on('click', function (e) {
+    $popup.on('click', ".confirmAddress", function (e) {
         e.preventDefault();
-        var addressVariant = $('.address-popup_js .addressVariant:checked')[0];
-        var address = addressVariant.dataset.address;
-        var city = addressVariant.dataset.city;
-        var zipCode = addressVariant.dataset.zipCode;
+        var $addressVariant = $('.address-popup_js .addressVariant:checked');
+        var address = $addressVariant.data('address');
+        var city = $addressVariant.data('city');
+        var zipCode = $addressVariant.data('zipCode');
         var $form = $('form.address-form');
 
-        $form.find('input#address1').val(address);
-        $form.find('input#city').val(city);
-        $form.find('input#zipCode').val(zipCode);
+        $form.find('#address1').val(address);
+        $form.find('#city').val(city);
+        $form.find('#zipCode').val(zipCode);
 
         saveAddresss();
     })
