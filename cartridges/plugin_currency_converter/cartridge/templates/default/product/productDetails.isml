@@ -124,6 +124,19 @@
                             <isinclude template="product/components/addToCartProduct" />
                         </div>
 
+                        <!-- Currency rates -->                
+                        <isif condition="${pdict.currencyApiEnable}">
+                            <br>
+                            <div class="js-rates-section text-center">
+                                 <button type="button" 
+                                    class="js-select-currency btn btn-warning"
+                                    data-action-url="${URLUtils.url('Product-CurrencyRates')}">
+                                    Select currency
+                                </button>
+                                <div class="js-convertered-price text-center font-weight-bold invisible"></div>
+                            </div>
+                        </isif>
+        
                         <!-- Social Sharing Icons -->
                         <div class="row">
                             <isinclude template="product/components/socialIcons" />
